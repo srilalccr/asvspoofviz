@@ -89,7 +89,7 @@ def extract_features(file, features, cached=False):
         return get_feats()
 
 
-def train_gmm(data_label, features, train_keys, train_folders, audio_ext, dict_file, ncomp, init_only=False):
+def train_gmm(data_label, features, train_keys, train_folders, audio_ext, dict_file, ncomp, files_downsample, label_offset, init_only=False):
     logging.info('Start GMM training.')
 
     partial_gmm_dict_file = '_'.join((dict_file, data_label, 'init', 'partial.pkl'))
@@ -101,9 +101,9 @@ def train_gmm(data_label, features, train_keys, train_folders, audio_ext, dict_f
         data = list()
         for k, train_key in enumerate(train_keys):
             pd = pandas.read_csv(train_key, sep=' ', header=None)
-            files = pd[pd[4] == data_label][1]
+            files = pd[pd[label_offset] == data_label][1]
             # files_subset = sample(list(files), 1000)  # random init with 1000 files
-            files_subset = (files.reset_index()[1]).loc[list(range(0, len(files), 10))]  # only every 10th file init
+            files_subset = (files.reset_index()[1]).loc[list(range(0, len(files), files_downsample))]  # files_downsample 10: only every 10th file init
             for file in files_subset:
                 Tx = extract_features(train_folders[k] + file + audio_ext, features=features, cached=True)
                 data.append(Tx.T)
