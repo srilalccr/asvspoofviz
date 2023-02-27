@@ -14,9 +14,9 @@ dict_file = 'gmm_LA_cqcc.pkl'
 dict_file_final = 'gmm_cqcc_asvspoof21_la.pkl'
 
 # configs - train & dev data - if you change these datasets
-db_folder = ''
-train_folders = [db_folder + 'LA/ASVspoof2019_LA_train/flac/']  # [db_folder + 'LA/ASVspoof2019_LA_train/flac/', db_folder + 'LA/ASVspoof2019_LA_dev/flac/']
-train_keys = [db_folder + 'LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.train.trn.txt']  # [db_folder + 'LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.train.trn.txt', db_folder + 'LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.dev.trn.txt']
+db_folder = '/home/gpu/WorkOther/ASVspoof/'
+train_folders = [db_folder + 'LA/ASVspoof2021_LA_eval/flac/']  # [db_folder + 'LA/ASVspoof2019_LA_train/flac/', db_folder + 'LA/ASVspoof2019_LA_dev/flac/']
+train_keys = [db_folder + 'LA/ASVspoof2021_LA_cm_protocols/ASVspoof2021.LA.cm.train.trn.txt']  # [db_folder + 'LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.train.trn.txt', db_folder + 'LA/ASVspoof2019_LA_cm_protocols/ASVspoof2019.LA.cm.dev.trn.txt']
 
 audio_ext = '.flac'
 
@@ -24,11 +24,11 @@ audio_ext = '.flac'
 if not exists(dict_file):
     gmm_bona = train_gmm(data_label='bonafide', features=features,
                          train_keys=train_keys, train_folders=train_folders, audio_ext=audio_ext,
-                         dict_file=dict_file, ncomp=ncomp,
+                         dict_file=dict_file, ncomp=ncomp, files_downsample = 200, label_offset=5, 
                          init_only=True)
     gmm_spoof = train_gmm(data_label='spoof', features=features,
-                          train_keys=train_keys, train_folders=train_folders, audio_ext=audio_ext,
-                          dict_file=dict_file, ncomp=ncomp,
+                          train_keys=train_keys, train_folders=train_folders, audio_ext=audio_ext, 
+                          dict_file=dict_file, ncomp=ncomp, files_downsample = 200, label_offset=5, 
                           init_only=True)
 
     gmm_dict = dict()
